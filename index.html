@@ -10,17 +10,17 @@
    <script>
    </script>
   <body>
-	<button id='open-modal-1'>Open Modal</button>  	
+    <button id='open-modal-1'>Open Modal</button>
     <nak-modal id='modal-1'>
-    	<p>CONTENTS hogehoge</p>
-		<button onclick={this.close}>Close</button>  	
+        <p>CONTENTS hogehoge</p>
+        <button onclick={this.close}>Close</button>
     </nak-modal>
     <script>
-	   	riot.compile(function() {
-			var mods = riot.mount('nak-modal');
-	      	var btn=document.getElementById('open-modal-1');
-	      	btn.addEventListener('click',function(){mods[0].open();});
-		});
+        riot.compile(function() {
+            var mods = riot.mount('nak-modal');
+            var btn=document.getElementById('open-modal-1');
+            btn.addEventListener('click',function(){mods[0].open();});
+        });
     </script>
   </body>
 </html>

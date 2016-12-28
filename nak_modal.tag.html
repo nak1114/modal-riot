@@ -1,51 +1,53 @@
 <nak-modal>
-  <div class='nak-modal nak-modal-content'>
-    <yield/>
-  </div>
-  <div class='nak-modal nak-modal-overlay' onclick={close}>
-  </div>
+      <div class='nak-modal-overlay' onclick={close}
+      ><div class='nak-modal-content' onclick={noclose}>
+         <yield/>
+      </div>
+      </div>
   <script>
-    var self=this;
-    this.resize = function(){
-      var div=self.root.getElementsByClassName('nak-modal-content')[0];
-      if(!div){return};
-      var windowWidth = (window.innerWidth || document.documentElement.clientWidth || 0);
-      var windowHeight = (window.innerHeight || document.documentElement.clientHeight || 0);
-      var top = ((windowHeight - div.offsetHeight)/2);
-      var left = ((windowWidth - div.offsetWidth)/2);
-      div.style.top= top+"px";
-      div.style.left= left+"px";
-    }
-    this.open=function(){
-      this.root.style.display="";
-      this.resize();
-    }
-    this.close=function(){
-      this.root.style.display="none";
-    }
-    this.on('update', function() {
-      this.resize();
-    })
-    this.on('before-mount', function() {
-      this.close();
-    })
-    this.on('mount', function() {
-      this.update();
-      window.addEventListener('resize', self.resize);
-    //document.getElementById("hoge").style.display="none";
-    })
-    this.on('unmount', function() {
-      window.removeEventListener('resize', self.resize);
-    })
+  var tag=this;
+  tag.resize = function(){
+    var div=tag.root.firstChild.firstChild;
+    if(!div){return};
+    var windowWidth = (window.innerWidth || document.documentElement.clientWidth || 0);
+    var windowHeight = (window.innerHeight || document.documentElement.clientHeight || 0);
+    var top = ((windowHeight - div.offsetHeight)/2);
+    var left = ((windowWidth - div.offsetWidth)/2);
+    div.style.top= top+"px";
+    div.style.left= left+"px";
+  }
+  tag.open=function(){
+    tag.root.style.display="";
+    tag.resize();
+  }
+  tag.close=function(){
+    tag.root.style.display="none";
+  }
+  tag.noclose=function(e){
+    e.stopPropagation();
+  }
+  this.on('update', function() {
+    tag.resize();
+  })
+  tag.on('before-mount', function() {
+    tag.close();
+  })
+  tag.on('mount', function() {
+    tag.update();
+    tag.count=0;
+    window.addEventListener('resize', tag.resize);
+  })
+  tag.on('unmount', function() {
+    window.removeEventListener('resize', tag.resize);    
+  })
   </script>
     <style scoped>
     .nak-modal-content{
-      z-index:2;
       position:fixed;
       top:10px;
       left:10px;
       width:50%;
-      margin:1.5em auto 0;
+      margin: 0;
       padding:10px 20px;
       border:2px solid #aaa;
       background:#fff;
